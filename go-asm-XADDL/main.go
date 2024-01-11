@@ -9,5 +9,5 @@ func main() {
 	var p2 uint32 = 13
 	fmt.Println(p1, p2) // 12 13
 	old := Xadd(&p1, p2)
-	fmt.Println(old, p1) // 12 13
+	fmt.Println(old, p1) // 25 25
 }
