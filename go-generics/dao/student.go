@@ -5,7 +5,6 @@ import (
 )
 
 type student struct {
-	Name string
 }
 
 func NewStudent() *student {

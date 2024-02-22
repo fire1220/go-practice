@@ -10,12 +10,12 @@ import (
 func main() {
 	fmt.Println("类展示：")
 	d, err := dao.NewStudent().Generics().GetOne()
-	fmt.Printf("%#v\t%#v\n", d, err) // model.Student{Id:2, Name:"李四", Like:"足球"}   <nil>
-	x, err := dao.NewTeacher().Generics().GetOne()
-	fmt.Printf("%#v\t%#v\n", x, err) // model.Teacher{Id:2, Name:"李四", Type:1}        <nil>
+	// model.Student{Id:2, Name:"李四", Like:"足球"}   <nil>
+	fmt.Printf("%#v\t%#v\n", d, err)
 
-	fmt.Println("工具展示：")
-	tool()
+	x, err := dao.NewTeacher().Generics().GetOne()
+	// model.Teacher{Id:2, Name:"李四", Type:1}        <nil>
+	fmt.Printf("%#v\t%#v\n", x, err)
 }
 
 func tool() {
