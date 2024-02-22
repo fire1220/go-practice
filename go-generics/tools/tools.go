@@ -9,7 +9,11 @@ func InArray[T comparable](needle T, haystack []T) bool {
 	return false
 }
 
-type Array[T int | int8 | int16 | int64] []T
+type intSet interface {
+	int | int8 | int16 | int32 | int64
+}
+
+type Array[T intSet] []T
 
 func (a Array[T]) InArray(needle T) bool {
 	for _, val := range a {

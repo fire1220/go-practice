@@ -26,7 +26,7 @@ func main() {
 
 func tool() {
 	arr := []int64{1, 2, 3, 4}
-	x := tools.Array[int64](arr)
+	x := tools.Array[int64](arr)       // 定义类型
 	fmt.Println(x.InArray(3))          // true
 	fmt.Println(x.InArray(5))          // false
 	fmt.Println(tools.InArray(3, arr)) // true
