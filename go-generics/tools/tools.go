@@ -19,7 +19,3 @@ func (a Array[T]) InArray(needle T) bool {
 	}
 	return false
 }
-
-func main() {
-
-}
