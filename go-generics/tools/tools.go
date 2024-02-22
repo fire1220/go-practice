@@ -11,10 +11,6 @@ func InArray[T comparable](needle T, haystack []T) bool {
 	return false
 }
 
-type intSet interface {
-	int | int8 | int16 | int32 | int64
-}
-
 type Array[T constraints.Ordered] []T
 
 func (a Array[T]) InArray(needle T) bool {
@@ -24,4 +20,12 @@ func (a Array[T]) InArray(needle T) bool {
 		}
 	}
 	return false
+}
+
+type intSet interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+
+func Add[T intSet](a, b T) T {
+	return a + b
 }
