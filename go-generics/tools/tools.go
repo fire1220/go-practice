@@ -1,6 +1,4 @@
-package main
-
-import "fmt"
+package tools
 
 func InArray[T comparable](needle T, haystack []T) bool {
 	for _, val := range haystack {
@@ -23,10 +21,5 @@ func (a Array[T]) InArray(needle T) bool {
 }
 
 func main() {
-	arr := []int64{1, 2, 3, 4}
-	x := Array[int64](arr)
-	fmt.Println(x.InArray(3))    // true
-	fmt.Println(x.InArray(5))    // false
-	fmt.Println(InArray(3, arr)) // true
-	fmt.Println(InArray(5, arr)) // false
+
 }
