@@ -6,13 +6,14 @@ import (
 )
 
 type teacher struct {
+	Generics[model.Teacher]
 }
 
 func NewTeacher() *teacher {
 	return new(teacher)
 }
 
-func (t *teacher) Generics() *Generics[model.Teacher] {
+func (t *teacher) Gen() *Generics[model.Teacher] {
 	return new(Generics[model.Teacher])
 }
 

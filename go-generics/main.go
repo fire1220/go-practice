@@ -9,11 +9,17 @@ import (
 // go 泛型演示
 func main() {
 	fmt.Println("类展示：")
-	d, err := dao.NewStudent().Generics().GetOne()
+	d, err := dao.NewStudent().Gen().GetOne()
+	// model.Student{Id:2, Name:"李四", Like:"足球"}   <nil>
+	fmt.Printf("%#v\t%#v\n", d, err)
+	d, err = dao.NewStudent().GetOne()
 	// model.Student{Id:2, Name:"李四", Like:"足球"}   <nil>
 	fmt.Printf("%#v\t%#v\n", d, err)
 
-	x, err := dao.NewTeacher().Generics().GetOne()
+	x, err := dao.NewTeacher().Gen().GetOne()
+	// model.Teacher{Id:2, Name:"李四", Type:1}        <nil>
+	fmt.Printf("%#v\t%#v\n", x, err)
+	x, err = dao.NewTeacher().GetOne()
 	// model.Teacher{Id:2, Name:"李四", Type:1}        <nil>
 	fmt.Printf("%#v\t%#v\n", x, err)
 }

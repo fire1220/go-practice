@@ -5,13 +5,14 @@ import (
 )
 
 type student struct {
+	Generics[model.Student]
 }
 
 func NewStudent() *student {
 	return new(student)
 }
 
-func (s *student) Generics() *Generics[model.Student] {
+func (s *student) Gen() *Generics[model.Student] {
 	return new(Generics[model.Student])
 }
 
