@@ -14,8 +14,8 @@ func main() {
 		IP:   net.IPv4(127, 0, 0, 1),
 		Port: 2000,
 	}
-	conn, err := net.DialUDP("udp", localAddr, serverAddr)
-	// conn, err := net.Dial("udp", "127.0.0.1:1888") // 这种方式也可以
+	conn, err := net.DialUDP("udp", localAddr, serverAddr) // 这种方式是固定本地端口
+	// conn, err := net.Dial("udp", "127.0.0.1:1888") // 这种方式也可以,这种方式是随机本地端口
 	if err != nil {
 		log.Printf("链接失败：err=%v\n", err)
 		return
