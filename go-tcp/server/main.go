@@ -22,7 +22,6 @@ func main() {
 		conn, err := listen.Accept() // 如果没有数据接收会阻塞在这里
 		if err != nil {
 			log.Printf("接收链接失败，错误：%v\n", err)
-			// conn.Close()
 			continue
 		}
 		log.Printf("连接成功，来自%v\n", conn.RemoteAddr().String())
