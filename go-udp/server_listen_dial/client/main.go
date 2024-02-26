@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	// 拨号模式
 	serverAddr := &net.UDPAddr{
 		IP:   net.IPv4(127, 0, 0, 1),
 		Port: 1888,
