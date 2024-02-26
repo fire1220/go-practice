@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	// 监听模式
 	listen, err := net.Listen("tcp", "127.0.0.1:1888")
 	if err != nil {
 		log.Printf("启动监听失败，错误：%v\n", err)

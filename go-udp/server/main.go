@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	// 监听模式
 	local := &net.UDPAddr{IP: net.IPv4(127, 0, 0, 1), Port: 1888}
 	conn, err := net.ListenUDP("udp", local)
 	if err != nil {

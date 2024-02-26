@@ -11,7 +11,7 @@ func main() {
 		Port: 1888,
 	}
 	localAddr := &net.UDPAddr{
-		IP:   net.IPv4(127, 0, 0, 1),
+		IP:   net.ParseIP("127.0.0.1"),
 		Port: 2000,
 	}
 	conn, err := net.DialUDP("udp", localAddr, serverAddr) // 这种方式是固定本地端口
