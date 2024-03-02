@@ -15,7 +15,7 @@ type UserService struct {
 }
 
 func (s *UserService) GetUserInfo(ctx context.Context, r *pb.UserRequest) (*pb.UserResponse, error) {
-	log.Printf("try to get user info by %v\n", r.GetName())
+	log.Printf("有客户端调用GetUserInfo方法。昵称是：%v\n", r.GetName())
 	if len(r.GetName()) == 0 {
 		return nil, errors.New("the query name cannot be empty")
 	}
@@ -23,6 +23,7 @@ func (s *UserService) GetUserInfo(ctx context.Context, r *pb.UserRequest) (*pb.U
 }
 
 func main() {
+	log.Printf("启动服务端")
 	// 监听端口
 	ln, err := net.Listen("tcp", "127.0.0.1:9888")
 	if err != nil {
