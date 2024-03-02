@@ -15,6 +15,7 @@ func main() {
 	conn, err := grpc.Dial("127.0.0.1:9888", credentials)
 	if err != nil {
 		log.Printf("连接失败：%v\n", err)
+		return
 	}
 	defer conn.Close()
 	// 初始化UserService客户端
