@@ -29,5 +29,5 @@ func main() {
 		log.Printf("调用GetUserInfo失败:%v\n", err)
 		return
 	}
-	log.Printf("%#v\n", response)
+	log.Printf("%+v\n", response)
 }
