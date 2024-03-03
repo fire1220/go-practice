@@ -23,7 +23,6 @@ func (s *UserService) GetUserInfo(ctx context.Context, r *pb.UserRequest) (*pb.U
 }
 
 func main() {
-	log.Printf("启动服务端")
 	// 监听端口
 	ln, err := net.Listen("tcp", "127.0.0.1:9888")
 	if err != nil {
@@ -31,11 +30,14 @@ func main() {
 		return
 	}
 	// 实例化gRPC服务
+	// credential, _ := credentials.NewClientTLSFromFile("./server.crt", "./server.key") // ca证书(如果服务器配置了ca证书加密)
+	// server := grpc.NewServer(grpc.Creds(credential))
 	server := grpc.NewServer()
 	// 注册UserService服务
 	pb.RegisterUserServiceServer(server, new(UserService))
 	// 向gRPC服务端注册反射服务
 	reflection.Register(server)
+	log.Printf("启动服务端")
 	// 启动gRPC服务
 	if err := server.Serve(ln); err != nil {
 		log.Printf("启动gRPC服务失败:%v\n", err)

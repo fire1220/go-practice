@@ -10,8 +10,10 @@ import (
 )
 
 func main() {
+	// credentials, _ := credentials.NewClientTLSFromFile("./ca.crt", "") // (如果服务器配置了ca证书加密)ca证书,第二个参数用来验证，一班是空字符串
+	// conn, err := grpc.Dial("127.0.0.1:9888", grpc.WithTransportCredentials(credentials))
 	// 远程连接凭证，insecure模式下禁用了传输安全认证
-	credentials := grpc.WithTransportCredentials(insecure.NewCredentials())
+	credentials := grpc.WithTransportCredentials(insecure.NewCredentials()) // 默认客户端必须加密传输，这里禁用加密传输
 	conn, err := grpc.Dial("127.0.0.1:9888", credentials)
 	if err != nil {
 		log.Printf("连接失败：%v\n", err)
