@@ -17,12 +17,6 @@ func (u *UserHandler) GetUserInfo(name string, reply *proto.UserInfo) error {
 	if name == "" {
 		return errors.New("参数不能为空")
 	}
-	// reply = &proto.UserInfo{
-	// 	Id:       2,
-	// 	Nickname: "jock1",
-	// 	Name:     "fire1",
-	// }
-	// reply = new(proto.UserInfo)
 	reply.Id = 1
 	reply.Name = "jock"
 	reply.Nickname = "fire"
