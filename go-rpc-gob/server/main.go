@@ -23,7 +23,11 @@ func (u *UserHandler) GetUserInfo(name string, p *proto.UserInfo) error {
 }
 
 func main() {
-	rpc.Register(new(UserHandler))
+	err := rpc.Register(new(UserHandler))
+	if err != nil {
+		log.Printf("服务器注册服务失败：%v\n", err)
+		return
+	}
 	listen, err := net.Listen("tcp", "127.0.0.1:9888")
 	if err != nil {
 		log.Printf("无服务监听失败：%v\n", err)
