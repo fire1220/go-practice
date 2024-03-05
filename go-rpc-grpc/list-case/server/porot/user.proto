@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "model/;pd";
+
+message UserInfo {
+  int32 Id = 1;
+  string Name = 2;
+  string Nickname = 3;
+}
+
+message UserList {
+  repeated UserInfo List = 1;
+}
+
+message UserFind {
+  string Name = 1;
+  repeated int32 Ids = 2;
+}
+
+service User{
+  rpc GetUserList(UserFind) returns (UserList);
+}
