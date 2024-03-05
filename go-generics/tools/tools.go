@@ -26,6 +26,6 @@ type intSet interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64
 }
 
-func Add[T intSet](a, b T) T {
+func Add[T constraints.Integer](a, b T) T {
 	return a + b
 }

@@ -11,6 +11,8 @@ type MyInt int
 func TestAdd(t *testing.T) {
 	var a int8 = 1
 	var b int8 = 2
-	x := tools.Add(MyInt(a), MyInt(b))
+	// x := tools.Add(MyInt(a), MyInt(b))
+	// fmt.Println(x)
+	x := tools.Add(a, b)
 	fmt.Println(x)
 }
