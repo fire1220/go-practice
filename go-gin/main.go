@@ -20,14 +20,14 @@ type TBindParameter struct {
 
 func (c *Controller) TBind(ctx *gin.Context) {
 	var param TBindParameter
-	if err := ctx.Bind(&param); err != nil {
-		ctx.JSON(http.StatusConflict, gin.H{"code": 500, "msg": err})
-		return
-	}
-	// if err := ctx.ShouldBind(&param); err != nil {
-	// 	ctx.JSON(http.StatusBadGateway, gin.H{"code": 500, "msg": err})
+	// if err := ctx.Bind(&param); err != nil {
+	// 	ctx.JSON(http.StatusConflict, gin.H{"code": 500, "msg": err})
 	// 	return
 	// }
+	if err := ctx.ShouldBind(&param); err != nil {
+		ctx.JSON(http.StatusBadGateway, gin.H{"code": 500, "msg": err})
+		return
+	}
 	ctx.JSON(http.StatusOK, gin.H{"code": 200, "msg": "", "data": param})
 }
 
