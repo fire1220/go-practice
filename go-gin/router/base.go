@@ -23,5 +23,6 @@ func RegRouter(r gin.IRouter) {
 	{
 		api := api.Group("/test")
 		api.GetPost("list", controller.NewController().TBind)
+		api.GetPost("download", controller.NewController().Download)
 	}
 }
