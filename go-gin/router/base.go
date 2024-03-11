@@ -2,7 +2,6 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"main/controller"
 )
 
 type IRouter struct {
@@ -18,11 +17,8 @@ func (i IRouter) Group(s string, fn ...gin.HandlerFunc) IRouter {
 	return IRouter{IRouter: i.IRouter.Group(s, fn...)}
 }
 
+// RegRouter 注册路由
 func RegRouter(r gin.IRouter) {
-	api := IRouter{IRouter: r.Group("/api")}
-	{
-		api := api.Group("/test")
-		api.GetPost("list", controller.NewController().TBind)
-		api.GetPost("download", controller.NewController().Download)
-	}
+	BindRouter(r)
+	DownloadRouter(r)
 }
