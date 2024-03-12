@@ -19,6 +19,5 @@ func (i IRouter) Group(s string, fn ...gin.HandlerFunc) IRouter {
 
 // RegRouter 注册路由
 func RegRouter(r gin.IRouter) {
-	BindRouter(r)
-	DownloadRouter(r)
+	ApiRouter(r)
 }
