@@ -14,8 +14,7 @@ func (d DateTime) MarshalJSON() ([]byte, error) {
 	if t.IsZero() {
 		return []byte(`"0000-00-00 00:00:00"`), nil
 	}
-	var stamp = fmt.Sprintf("%q", t.Format("2006-01-02 15:04:05"))
-	return []byte(stamp), nil
+	return []byte(`"` + t.Format(`2006-01-02 15:04:05`) + `"`), nil
 }
 
 func Marshal(p any) ([]byte, error) {
