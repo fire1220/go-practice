@@ -23,5 +23,6 @@ func (t Good) MarshalJSON() ([]byte, error) {
 func main() {
 	good := Good{ID: 123, Name: "jock", PlayTime: time.Now(), ExecuteTime: time.Now()}
 	bytes, _ := json.Marshal(good)
-	fmt.Printf("%s", bytes)
+	// {"id":123,"name":"jock","play_time":"2024-03-15 18:23:43","execute_time":"2024-03-15","created_at":"","updated_at":"0000-00-00 00:00:00"}
+	fmt.Printf("%s\n", bytes)
 }
