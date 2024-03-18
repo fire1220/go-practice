@@ -1,5 +1,6 @@
 package ginvalidate
 
+// // 代码： go get github.com/fire1220/goutils/ginvalidate
 //
 // import (
 // 	"errors"
