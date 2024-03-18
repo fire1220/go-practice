@@ -2,7 +2,6 @@ package ginvalidate
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales"
@@ -12,33 +11,8 @@ import (
 	"github.com/go-playground/validator/v10"
 	enTranslations "github.com/go-playground/validator/v10/translations/en"
 	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
-	"net/http"
 	"sync"
 )
-
-type BaseController struct {
-}
-
-func (b *BaseController) Validate(ctx *gin.Context, param any) bool {
-	local := ctx.DefaultQuery("local", "zh")
-	if err := ctx.ShouldBind(param); err != nil {
-		errs, ok := err.(validator.ValidationErrors)
-		if !ok || len(errs) == 0 {
-			panic(err)
-		}
-		tans, ok := uni.GetTranslator(local) // 获取转换的实例
-		if !ok {
-			fmt.Println("获取语言包实例失败!")
-		}
-		// errMsg := errs.Translate(tans) // 返回全部错误(map)
-		errMsg := errs[0].Translate(tans) // 返回第一个错误
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code": 400, "msg": errMsg, "data": "",
-		})
-		return false
-	}
-	return true
-}
 
 var (
 	uni        *ut.UniversalTranslator
@@ -46,6 +20,13 @@ var (
 	utLangList []locales.Translator
 	_once      sync.Once
 )
+
+const (
+	english = "en"
+	chinese = "zh"
+)
+
+var languagesList = [...]string{english, chinese}
 
 func init() {
 	lazyInit()
@@ -72,9 +53,9 @@ func lazyInit() {
 					return errors.New("获取语言包实例错误")
 				}
 				switch val.Locale() {
-				case "en":
+				case english:
 					translations = enTranslations.RegisterDefaultTranslations
-				case "zh":
+				case chinese:
 					translations = zhTranslations.RegisterDefaultTranslations
 				default:
 					translations = enTranslations.RegisterDefaultTranslations
@@ -91,4 +72,43 @@ func lazyInit() {
 			panic(err)
 		}
 	})
+}
+
+func inLanguages(language string) bool {
+	for _, val := range languagesList {
+		if val == language {
+			return true
+		}
+	}
+	return false
+}
+
+func SimpleValidate(ctx *gin.Context, param any, localParam ...string) (bool, []error) {
+	local := ""
+	if len(localParam) == 0 {
+		local = ctx.DefaultQuery("local", "zh")
+	} else {
+		local = localParam[0]
+	}
+	if !inLanguages(local) {
+		return false, []error{errors.New("目前只支持中文和英文，无法识别：" + local)}
+	}
+	if err := ctx.ShouldBind(param); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok || len(errs) == 0 {
+			panic(err)
+		}
+		tans, ok := uni.GetTranslator(local) // 获取转换的实例
+		if !ok {
+			return false, []error{errors.New("验证器获取语言包实例失败，请检查是否配置正确")}
+		}
+		// errMsg := errs.Translate(tans) // 全部错误(map)
+		// errMsg := errs[0].Translate(tans) // 第一个错误
+		errList := make([]error, 0, len(errs)) // 全部错误
+		for _, val := range errs {
+			errList = append(errList, errors.New(val.Translate(tans)))
+		}
+		return false, errList
+	}
+	return true, nil
 }

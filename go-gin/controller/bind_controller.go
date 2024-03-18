@@ -3,12 +3,11 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"main/ginvalidate"
 	"net/http"
 )
 
 type bindController struct {
-	*ginvalidate.BaseController
+	*baseController
 }
 
 var _bindController = new(bindController)
