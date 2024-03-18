@@ -1,16 +1,17 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"main/ginvalidate"
 	"net/http"
 )
 
 type bindController struct {
+	*ginvalidate.BaseController
 }
 
-var _bindController *bindController
+var _bindController = new(bindController)
 
 func GetBindController() *bindController {
 	return _bindController
@@ -43,15 +44,24 @@ func (b *bindController) ShouldBind(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"code": 200, "msg": "", "data": param})
 }
 
-// ValidatorShouldBind 接收参数(自定义修改响应码),接收参数失败不影响响应码
+// ValidatorShouldBind 验证器
 func (b *bindController) ValidatorShouldBind(ctx *gin.Context) {
 	var param TBindParameter
 	if err := ctx.ShouldBind(&param); err != nil {
 		if e, ok := err.(validator.ValidationErrors); ok {
-			ctx.JSON(http.StatusBadGateway, gin.H{"code": 500, "msg": fmt.Sprint(e)})
+			ctx.JSON(http.StatusBadGateway, gin.H{"code": 500, "msg": e.Error()})
 			return
 		}
-		ctx.JSON(http.StatusBadGateway, gin.H{"code": 500, "msg": err})
+		ctx.JSON(http.StatusBadGateway, gin.H{"code": 500, "msg": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"code": 200, "msg": "", "data": param})
+}
+
+// BindValidator 验证器(中文)
+func (b *bindController) BindValidator(ctx *gin.Context) {
+	var param TBindParameter
+	if ok := b.Validate(ctx, &param); !ok {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"code": 200, "msg": "", "data": param})
