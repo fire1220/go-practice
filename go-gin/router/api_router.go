@@ -16,6 +16,7 @@ func ApiRouter(r gin.IRouter) {
 		api := api.Group("/bind")
 		api.GetPost("bind", controller.GetBindController().Bind)
 		api.GetPost("ShouldBind", controller.GetBindController().ShouldBind)
+		api.GetPost("ValidatorShouldBind", controller.GetBindController().ValidatorShouldBind)
 	}
 
 	{
