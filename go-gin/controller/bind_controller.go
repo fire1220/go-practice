@@ -7,7 +7,7 @@ import (
 )
 
 type bindController struct {
-	*baseController
+	*BaseController
 }
 
 var _bindController = new(bindController)
