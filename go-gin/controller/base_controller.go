@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"github.com/fire1220/goutils/ginvalidate"
 	"github.com/gin-gonic/gin"
-	"main/ginvalidate"
 	"net/http"
 )
 
