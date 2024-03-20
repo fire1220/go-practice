@@ -2,3 +2,4 @@
 package pkg
 
 var Name string
+var Title string

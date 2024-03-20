@@ -6,6 +6,7 @@ import (
 
 func main() {
 	println(pkg.Name)
+	println(pkg.Title)
 	// str := pkg.Name
 	// t := (*reflect.SliceHeader)(unsafe.Pointer(&str))
 	// var ret []byte
