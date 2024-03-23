@@ -26,7 +26,7 @@ DATA title<>+0(SB)/16, $"hello Golang"       // 定义局部变量的值
 // 定义全局变量（全局变量关键词是重点·）
 GLOBL ·Title(SB), NOPTR | RODATA, $16
 DATA ·Title+0(SB)/8, $title<>(SB)           // 设置字符串指针指向局部变量
-DATA ·Title+8(SB)/8, $16                    // 设置字符串长度
+DATA ·Title+8(SB)/8, $12                    // 设置字符串长度
 
 //  内存分布
 // ****************
