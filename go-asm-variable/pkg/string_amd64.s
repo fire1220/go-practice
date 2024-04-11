@@ -42,3 +42,14 @@ DATA ·Title+8(SB)/8, $12                    // 设置字符串长度
 // ****************
 // * hello Golang *
 // ****************
+
+
+// 函数返回字符串
+TEXT ·GetHelloWorld(SB), NOSPLIT, $16
+    GLOBL name<>(SB), NOPTR|RODATA, $16
+    DATA $name<>+0(SB)/15, $"hello world!!!!"
+
+    MOVQ $name<>(SB), AX
+    MOVQ AX, ret+0(FP)
+    MOVQ $15, ret+8(FP)
+RET;
