@@ -2,10 +2,19 @@ package main
 
 import (
 	"fmt"
+	"go-reflect/people"
+	"go-reflect/src"
 	"reflect"
 )
 
 func main() {
+	user := people.People{Name: "jock", Nick: "fire"}
+	user.SetLike("篮球")
+	fmt.Println(user.GetLike())
+	src.GetPrivate(user, "like")
+}
+
+func TestStructByName() {
 	type People struct {
 		Name string
 		Age  int
