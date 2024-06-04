@@ -21,7 +21,7 @@ type TBindParameter struct {
 	Id   int    `json:"id" form:"id" binding:"required"`
 	Name string `json:"name" form:"name"`
 	Date string `json:"date" form:"date" binding:"datetime=2006-01"`
-	Yes  bool   `json:"yes" form:"yes"`
+	Yes  *bool  `json:"yes" form:"yes"`
 }
 
 // Bind {"id":2,"date":"2024-06","yes":true}
