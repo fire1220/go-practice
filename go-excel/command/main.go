@@ -25,11 +25,21 @@ func main() {
 		log.Printf("OpenFile err:%v\n", err)
 		return
 	}
-	excelRowList, err := openFile.GetRows(sheetName) // 读取行
+
+	defer func(openFile *excelize.File) {
+		err := openFile.Close()
+		if err != nil {
+			log.Printf("OpenFile.Close err:%v\n", err)
+		}
+	}(openFile)
+
+	excelRowList, err := openFile.GetRows(sheetName, excelize.Options{RawCellValue: true}) // 读取行
 	if err != nil {
 		log.Printf("GetRows err:%v\n", err)
 		return
 	}
+
+	// 遍历行数据，确保空单元格返回空字符串
 	firstRowCount := 0
 	for k, row := range excelRowList {
 		if k == 0 {
@@ -44,6 +54,7 @@ func main() {
 			excelRowList[k] = row
 		}
 	}
+
 	j, err := json.Marshal(excelRowList)
 	if err != nil {
 		log.Printf("Marshal err:%v\n", err)
