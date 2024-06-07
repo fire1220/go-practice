@@ -30,6 +30,20 @@ func main() {
 		log.Printf("GetRows err:%v\n", err)
 		return
 	}
+	firstRowCount := 0
+	for k, row := range excelRowList {
+		if k == 0 {
+			firstRowCount = len(row)
+			continue
+		}
+		full := firstRowCount - len(row)
+		if full > 0 {
+			for i := 0; i < full; i++ {
+				row = append(row, "")
+			}
+			excelRowList[k] = row
+		}
+	}
 	j, err := json.Marshal(excelRowList)
 	if err != nil {
 		log.Printf("Marshal err:%v\n", err)
