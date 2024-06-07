@@ -1,4 +1,4 @@
-module exceljson
+module jsonExcel
 
 go 1.20
 
