@@ -14,10 +14,10 @@ var sheetName string // 表格的sheet名称
 
 func main() {
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stdout, "%s 将表格文件转换为json\n\n", flag.CommandLine.Name())
-		fmt.Fprintf(os.Stdout, "Usage: %s example.xlsx\n", flag.CommandLine.Name())
-		fmt.Fprintf(os.Stdout, "       %s -f example.xlsx\n", flag.CommandLine.Name())
-		fmt.Fprintf(os.Stdout, "       %s -s sheet1 -f example.xlsx\n\n", flag.CommandLine.Name())
+		_, _ = fmt.Fprintf(os.Stdout, "%s 将表格文件转换为json\n\n", flag.CommandLine.Name())
+		_, _ = fmt.Fprintf(os.Stdout, "Usage: %s example.xlsx\n", flag.CommandLine.Name())
+		_, _ = fmt.Fprintf(os.Stdout, "       %s -f example.xlsx\n", flag.CommandLine.Name())
+		_, _ = fmt.Fprintf(os.Stdout, "       %s -s sheet1 -f example.xlsx\n\n", flag.CommandLine.Name())
 		flag.PrintDefaults()
 	}
 	flag.StringVar(&fileName, "f", "", "表格文件路径，例如 example.xlsx")
