@@ -14,7 +14,7 @@ var sheetName string // 表格的sheet名称
 
 func main() {
 	flag.StringVar(&fileName, "f", "", "表格文件路径，例如 file.xlsx")
-	flag.StringVar(&sheetName, "s", "Sheet1", "表的sheet名称，默认是Sheet1")
+	flag.StringVar(&sheetName, "s", "", "表的sheet名称，默认是第一个sheet")
 	flag.Parse() // 解析命令行
 	if fileName == "" {
 		fmt.Println("没有对应文件，参数是 -f")
@@ -32,6 +32,10 @@ func main() {
 			log.Printf("OpenFile.Close err:%v\n", err)
 		}
 	}(openFile)
+
+	if sheetName == "" {
+		sheetName = openFile.GetSheetName(0)
+	}
 
 	excelRowList, err := openFile.GetRows(sheetName) // 读取行
 	if err != nil {
