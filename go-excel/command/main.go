@@ -13,11 +13,11 @@ var fileName string  // 文件名称
 var sheetName string // 表格的sheet名称
 
 func main() {
-	flag.StringVar(&fileName, "f", "file.xlsx", "excel file name")
-	flag.StringVar(&sheetName, "s", "Sheet1", "sheet tag name")
+	flag.StringVar(&fileName, "f", "", "表格文件路径，例如 file.xlsx")
+	flag.StringVar(&sheetName, "s", "Sheet1", "表的sheet名称，默认是Sheet1")
 	flag.Parse() // 解析命令行
 	if fileName == "" {
-		fmt.Println("没有对应文件")
+		fmt.Println("没有对应文件，参数是 -f")
 		return
 	}
 	openFile, err := excelize.OpenFile(fileName) // 读取文件
