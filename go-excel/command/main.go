@@ -33,7 +33,7 @@ func main() {
 		}
 	}(openFile)
 
-	excelRowList, err := openFile.GetRows(sheetName, excelize.Options{RawCellValue: true}) // 读取行
+	excelRowList, err := openFile.GetRows(sheetName) // 读取行
 	if err != nil {
 		log.Printf("GetRows err:%v\n", err)
 		return
