@@ -10,11 +10,25 @@ import (
 )
 
 func main() {
+	tWriteAppendSave()
+	tReadToJson()
+}
+
+func tReadToJson() {
+	j, err := readToJson("file.xlsx")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(j)
+	}
+}
+
+func tWriteAppendSave() {
+	fileName := "file.xlsx"
 	var data [][]interface{}
 	data = append(data, []interface{}{1, "jock", 12})
 	data = append(data, []interface{}{2, "fire", 13})
-
-	e := writeAppendSave("file1.xlsx", data, "Sheet1")
+	e := writeAppendSave(fileName, data, "Sheet1")
 	if e != nil {
 		fmt.Println(fmt.Errorf("第1次批量写入失败：err:%v", e))
 		return
@@ -23,20 +37,12 @@ func main() {
 	time.Sleep(10 * time.Second)
 	data = append(data, []interface{}{3, "zhangSan", 14})
 	data = append(data, []interface{}{4, "lisi", 15})
-	e = writeAppendSave("file1.xlsx", data, "Sheet1", 3)
+	e = writeAppendSave(fileName, data, "Sheet1", 3)
 	if e != nil {
 		fmt.Println(fmt.Errorf("第2次批量写入失败：err:%v", e))
 		return
 	}
-
 	return
-
-	j, err := readToJson("file.xlsx")
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(j)
-	}
 }
 
 // 读取表格,返回json
