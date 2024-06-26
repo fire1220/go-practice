@@ -4,10 +4,33 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/xuri/excelize/v2"
+	"os"
+	"time"
 	"unsafe"
 )
 
 func main() {
+	var data [][]interface{}
+	data = append(data, []interface{}{1, "jock", 12})
+	data = append(data, []interface{}{2, "fire", 13})
+
+	e := writeAppendSave("file1.xlsx", data, "Sheet1")
+	if e != nil {
+		fmt.Println(fmt.Errorf("第1次批量写入失败：err:%v", e))
+		return
+	}
+	data = [][]interface{}{}
+	time.Sleep(10 * time.Second)
+	data = append(data, []interface{}{3, "zhangSan", 14})
+	data = append(data, []interface{}{4, "lisi", 15})
+	e = writeAppendSave("file1.xlsx", data, "Sheet1", 3)
+	if e != nil {
+		fmt.Println(fmt.Errorf("第2次批量写入失败：err:%v", e))
+		return
+	}
+
+	return
+
 	j, err := readToJson("file.xlsx")
 	if err != nil {
 		fmt.Println(err)
@@ -38,6 +61,40 @@ func readToJson(fileName string, sheetL ...string) (string, error) {
 }
 
 // 写入表格
-func write() {
+func writeAppendSave(fileName string, data [][]interface{}, sheet string, appendRowNumL ...int) error {
+	appendRowNum := 1
+	if len(appendRowNumL) > 0 {
+		appendRowNum = appendRowNumL[0]
+	}
+	var f *excelize.File
+	var err error
+	if fileExists(fileName) {
+		f, err = excelize.OpenFile(fileName)
+		if err != nil {
+			return err
+		}
+	} else {
+		f = excelize.NewFile()
+		index, err := f.NewSheet(sheet)
+		if err != nil {
+			return fmt.Errorf("创建失败；err:%v", err)
+		}
+		f.SetActiveSheet(index)
+	}
+	for _, val := range data {
+		err = f.SetSheetRow(sheet, fmt.Sprintf("A%d", appendRowNum), &val)
+		if err != nil {
+			return fmt.Errorf("写入失败；err:%v", err)
+		}
+		appendRowNum++
+	}
+	return f.SaveAs(fileName)
+}
 
+func fileExists(path string) bool {
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return err == nil
 }
