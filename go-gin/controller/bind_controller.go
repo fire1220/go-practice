@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
@@ -20,12 +21,17 @@ type TBindParameter struct {
 	Id   int    `json:"id" form:"id" binding:"required"`
 	Name string `json:"name" form:"name"`
 	Date string `json:"date" form:"date" binding:"datetime=2006-01"`
+	Yes  *bool  `json:"yes" form:"yes"`
 }
 
+// Bind {"id":2,"date":"2024-06","yes":true}
+// curl --location --request POST '127.0.0.1:9888/api/bind/bind' --header 'Content-Type: application/json' --data-raw '{"id":2,"date":"2024-06","yes":true}'
 // Bind 接收参数(入股保存会相应更改响应码，RESTful风格，此时家变ctx.JSON修改相应码也是无效的)
 func (b *bindController) Bind(ctx *gin.Context) {
 	var param TBindParameter
 	if err := ctx.Bind(&param); err != nil {
+		fmt.Println(param)
+		fmt.Printf("%#v\n", err)
 		ctx.JSON(http.StatusConflict, gin.H{"code": 500, "msg": err})
 		return
 	}
