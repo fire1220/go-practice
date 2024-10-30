@@ -4,15 +4,20 @@ import (
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
-	"time"
 )
 
 // 对称加密算法的JWT
 func main() {
 	m := map[string]any{
-		"foo":  "bar",
-		"name": "jock",
-		"exp":  float64(time.Now().Add(1 * time.Hour).Unix()),
+		"jti":      "jwt_1",             // 【保留字段】(JWT ID)是JWT的唯一标识
+		"exp":      float64(3516239022), // 【保留字段】(Expiration time)过期时间(类型是float64、json.Number)
+		"nbf":      float64(1516239022), // 【保留字段】(Not Before)这个参数指示了在什么时间之前，JWT是无效的
+		"iat":      float64(1516239022), // 【保留字段】(Issued at)签发时间
+		"aud":      "example.org",       // 【保留字段】(Audience)接收对象
+		"iss":      "example.com",       // 【保留字段】(Issuser)签发主体
+		"sub":      "fire",              // 【保留字段】(Subject)代表这个JWT的主体，即它的所有人
+		"userName": "jock",              // 【业务】数据
+		"userAge":  12,                  // 【业务】用户数据
 	}
 	sig, err := HMACSign([]byte("abcd"), m)
 	fmt.Println("对称加密的JWT")

@@ -12,8 +12,15 @@ import (
 // 非对称加密的JWT
 func main() {
 	m := map[string]any{
-		"foo":  "bar",
-		"name": "jock",
+		"jti":      "jwt_1",             // 【保留字段】(JWT ID)是JWT的唯一标识
+		"exp":      float64(1516239022), // 【保留字段】(Expiration time)过期时间(类型是float64、json.Number)
+		"nbf":      float64(1516239022), // 【保留字段】(Not Before)这个参数指示了在什么时间之前，JWT是无效的
+		"iat":      float64(1516239022), // 【保留字段】(Issued at)签发时间
+		"aud":      "example.org",       // 【保留字段】(Audience)接收对象
+		"iss":      "example.com",       // 【保留字段】(Issuser)签发主体
+		"sub":      "fire",              // 【保留字段】(Subject)代表这个JWT的主体，即它的所有人
+		"userName": "jock",              // 【业务】数据
+		"userAge":  12,                  // 【业务】用户数据
 	}
 	sig, err := RSASign("./sample_key", m)
 	// eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYW1lIjoiam9jayJ9.uB6HfQEgk8yo-vmUmzpDEOqRf3SCrmlb3F9bodoKu2YExD2CtA2WfDK8qv-D2FMED2MUeRarHriCIpYK4-WrHNwPSG-7nlhwstlmVyCk2K2JRXFttAnXZyryF-2dWdwHwY8l7aKJ1nU7O51jYLaEdPIiC3RvRoFh0VSiCKiFDH196X5jA0ot72tTCIRRm-VxSVHdfAJZRHaXLPqKPLQCMaAYDT-3yzyjudGkDPSU6pjK-5qeWwE92-U-daoEdwLcPeYQrEBjJLRV-7QP3JSmqgiRx2fx2vnh_kOU2nBSegDmuocj4DaGFcl7xLFhlg3nlWnwcNQ_nm_xzRlTv6YwiA
