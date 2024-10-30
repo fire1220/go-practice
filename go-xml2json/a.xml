@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<body>
+<person>
+    <name>John Doe</name>
+    <age>30</age>
+    <info>
+        <address>123 Elm St</address>
+        <city>Somewhere</city>
+    </info>
+</person>
+</body>
