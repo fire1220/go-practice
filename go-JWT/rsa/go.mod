@@ -1,4 +1,4 @@
-module go-JWT-HMAC
+module go-JWT-RSC
 
 go 1.20
 
