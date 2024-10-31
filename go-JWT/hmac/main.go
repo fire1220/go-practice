@@ -13,9 +13,9 @@ func main() {
 		"exp":      float64(3516239022), // 【保留字段】(Expiration time)过期时间(类型是float64、json.Number)
 		"nbf":      float64(1516239022), // 【保留字段】(Not Before)这个参数指示了在什么时间之前，JWT是无效的
 		"iat":      float64(1516239022), // 【保留字段】(Issued at)签发时间
-		"aud":      "example.org",       // 【保留字段】(Audience)接收对象
-		"iss":      "example.com",       // 【保留字段】(Issuser)签发主体
-		"sub":      "fire",              // 【保留字段】(Subject)代表这个JWT的主体，即它的所有人
+		"aud":      "张三",                // 【保留字段】(Audience)接收对象
+		"iss":      "jock.com",          // 【保留字段】(Issuser)签发主体
+		"sub":      "lee",               // 【保留字段】(Subject)代表这个JWT的主体，即它的所有人
 		"userName": "jock",              // 【业务】数据
 		"userAge":  12,                  // 【业务】用户数据
 	}
@@ -39,12 +39,19 @@ func HMACSign(hmacSecret []byte, m map[string]any) (string, error) {
 
 // HMACVerify 验证JWT
 func HMACVerify(hmacSecret []byte, tokenString string) (jwt.MapClaims, error) {
+	optionsFuncList := append(make([]jwt.ParserOption, 0),
+		jwt.WithIssuedAt(),
+		jwt.WithIssuer("jock.com"),
+		jwt.WithAudience("张三"),
+		jwt.WithSubject("lee"),
+		jwt.WithValidMethods([]string{"HS256"}),
+	)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Method.Alg())
 		}
 		return hmacSecret, nil
-	})
+	}, optionsFuncList...)
 	if err != nil {
 		return nil, err
 	}
