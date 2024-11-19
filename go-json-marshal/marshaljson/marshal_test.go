@@ -39,9 +39,10 @@ func (t Good) MarshalJSON() ([]byte, error) {
 
 func TestMarshal(t *testing.T) {
 	good := Good{ID: 0, Name: "", PlayTime: time.Now(), ExecuteTime: time.Now()}
-	bytes, _ := json.Marshal(good)
+	bytes, err := json.Marshal(good)
 	// {"id":456,"val_float":111,"val":-111,"val_bool":true,"val_slice":[],"val_map":{},
 	// "val_struct":{"title":"ABC","like":"","play_time":"0000-00-00 00:00:00"},"val_struct2":{}, "name":"123",
 	// "play_time":"2024-11-19 17:56:58","execute_time":"2024-11-19","created_at":"0000-00-00","updated_at":""}
 	fmt.Printf("%s\n", bytes)
+	fmt.Println(err)
 }
