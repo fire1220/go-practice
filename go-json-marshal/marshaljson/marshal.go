@@ -11,7 +11,7 @@ func verifyField(fieldType reflect.StructField, fieldVal reflect.Value, tabName 
 	if !ok {
 		return tm, false
 	}
-	if fieldType.Tag.Get(tabName) == "" {
+	if _, ok := fieldType.Tag.Lookup(tabName); !ok {
 		return tm, false
 	}
 	if tm.restrain != "" && fieldType.Type.String() != tm.restrain {
