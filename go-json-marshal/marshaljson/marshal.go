@@ -54,7 +54,7 @@ func MarshalFormat(p any) ([]byte, error) {
 			if !ok {
 				continue
 			}
-			if oldTyp.Type.String() != tm.restrain {
+			if tm.restrain != "" && oldTyp.Type.String() != tm.restrain {
 				continue
 			}
 			if tm.fun == nil {
