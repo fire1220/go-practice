@@ -10,9 +10,9 @@ import (
 type Good struct {
 	ID          int       `json:"id"`
 	Name        string    `json:"name"`
-	PlayTime    time.Time `json:"play_time" datetime:"omitempty"`
+	PlayTime    time.Time `json:"play_time" datetime:"2006-01-02 15:04:05"`
 	ExecuteTime time.Time `json:"execute_time" datetime:"2006-01-02" default:"-"`
-	CreatedAt   time.Time `json:"created_at" datetime:"omitempty"`
+	CreatedAt   time.Time `json:"created_at" datetime:"aaa"`
 	UpdatedAt   time.Time `json:"updated_at" default:"-"`
 }
 

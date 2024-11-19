@@ -2,7 +2,6 @@ package marshaljson
 
 import (
 	"reflect"
-	"strings"
 	"time"
 )
 
@@ -13,21 +12,13 @@ type dateTime struct {
 
 func (d dateTime) MarshalJSON() ([]byte, error) {
 	t := d.t
-	formatData := d.tag.Get("datetime")
-	format, ok := strings.CutSuffix(formatData, "omitempty")
-	format = strings.Trim(format, ",")
-	if format == "" {
-		format = time.DateTime
-	}
+	format := d.tag.Get("datetime")
 	mapTime := map[string]string{
 		time.DateTime: "0000-00-00 00:00:00",
 		time.DateOnly: "0000-00-00",
 		time.TimeOnly: "00:00:00",
 	}
 	if t.IsZero() {
-		if ok {
-			return []byte(`""`), nil
-		}
 		if v, ok := mapTime[format]; ok {
 			return []byte(`"` + v + `"`), nil
 		} else {

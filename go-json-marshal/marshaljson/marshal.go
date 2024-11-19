@@ -23,7 +23,7 @@ func MarshalFormat(p any) ([]byte, error) {
 			if !ok {
 				continue
 			}
-			if field.Type.String() != tm.restrain {
+			if tm.restrain != "" && field.Type.String() != tm.restrain {
 				continue
 			}
 			fieldType = tm.refTypOf
