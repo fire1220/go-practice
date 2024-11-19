@@ -12,7 +12,7 @@ type dateTime struct {
 
 func (d dateTime) MarshalJSON() ([]byte, error) {
 	t := d.t
-	format := d.tag.Get("datetime")
+	format := d.tag.Get(tabDateTime)
 	mapTime := map[string]string{
 		time.DateTime: "0000-00-00 00:00:00",
 		time.DateOnly: "0000-00-00",
