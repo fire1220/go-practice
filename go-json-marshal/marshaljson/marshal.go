@@ -7,6 +7,23 @@ import (
 	"time"
 )
 
+func verifyField(field reflect.StructField, tabName string) (tabT, bool) {
+	tm, ok := tabMap[tabName]
+	if !ok {
+		return tm, false
+	}
+	if field.Tag.Get(tabName) == "" {
+		return tm, false
+	}
+	if tm.restrain != "" && field.Type.String() != tm.restrain {
+		return tm, false
+	}
+	if tabName != tabDefault {
+
+	}
+	return tm, true
+}
+
 func MarshalFormat(p any) ([]byte, error) {
 	ref := reflect.ValueOf(p)
 	typ := ref.Type()
@@ -16,14 +33,8 @@ func MarshalFormat(p any) ([]byte, error) {
 		field := typ.Field(i)
 		fieldType := field.Type
 		for _, tabName := range tabList {
-			if field.Tag.Get(tabName) == "" {
-				continue
-			}
-			tm, ok := tabMap[tabName]
+			tm, ok := verifyField(field, tabName)
 			if !ok {
-				continue
-			}
-			if tm.restrain != "" && field.Type.String() != tm.restrain {
 				continue
 			}
 			fieldType = tm.refTypOf
@@ -47,14 +58,8 @@ func MarshalFormat(p any) ([]byte, error) {
 		var newFieldVal reflect.Value
 		newFieldVal = oldField
 		for _, tabName := range tabList {
-			if oldTyp.Tag.Get(tabName) == "" {
-				continue
-			}
-			tm, ok := tabMap[tabName]
+			tm, ok := verifyField(oldTyp, tabName)
 			if !ok {
-				continue
-			}
-			if tm.restrain != "" && oldTyp.Type.String() != tm.restrain {
 				continue
 			}
 			if tm.fun == nil {
