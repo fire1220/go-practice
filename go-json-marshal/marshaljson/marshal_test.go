@@ -13,7 +13,7 @@ type Good struct {
 	PlayTime    time.Time `json:"play_time" datetime:"omitempty"`
 	ExecuteTime time.Time `json:"execute_time" datetime:"2006-01-02" default:"-"`
 	CreatedAt   time.Time `json:"created_at" datetime:"omitempty"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	UpdatedAt   time.Time `json:"updated_at" default:"-"`
 }
 
 func (t Good) MarshalJSON() ([]byte, error) {

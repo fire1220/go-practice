@@ -2,45 +2,108 @@ package marshaljson
 
 import (
 	"encoding/json"
+	"fmt"
 	"reflect"
-	"strings"
 	"time"
 )
 
-type dateTime struct {
-	t   time.Time
-	tag reflect.StructTag
+const (
+	tabDefault  = "default"
+	tabDateTime = "datetime"
+)
+
+type tabT struct {
+	refTypOf reflect.Type
+	restrain string
+	fun      typeConvT
 }
 
-func (d dateTime) MarshalJSON() ([]byte, error) {
-	t := d.t
-	formatData := d.tag.Get("datetime")
-	format, ok := strings.CutSuffix(formatData, "omitempty")
-	format = strings.Trim(format, ",")
-	if format == "" {
-		format = time.DateTime
+var (
+	tabList = []string{tabDefault, tabDateTime}
+	tabMap  = map[string]tabT{
+		tabDefault: {
+			refTypOf: reflect.TypeOf(defaultT{}),
+			restrain: "",
+			fun:      defaultT{},
+		},
+		tabDateTime: {
+			refTypOf: reflect.TypeOf(dateTime{}),
+			restrain: "time.Time",
+			fun:      dateTime{},
+		},
 	}
-	mapTime := map[string]string{
-		time.DateTime: "0000-00-00 00:00:00",
-		time.DateOnly: "0000-00-00",
-		time.TimeOnly: "00:00:00",
-	}
-	if t.IsZero() {
-		if ok {
-			return []byte(`""`), nil
-		}
-		if v, ok := mapTime[format]; ok {
-			return []byte(`"` + v + `"`), nil
-		} else {
-			return []byte(`""`), nil
-		}
-	}
-	return []byte(`"` + t.Format(format) + `"`), nil
-}
+)
 
 func MarshalFormat(p any) ([]byte, error) {
 	ref := reflect.ValueOf(p)
 	typ := ref.Type()
+	newField := make([]reflect.StructField, 0, ref.NumField())
+	isNeedNewStruct := false
+	for i := 0; i < ref.NumField(); i++ {
+		field := typ.Field(i)
+		fieldType := field.Type
+		for _, tabName := range tabList {
+			if field.Tag.Get(tabName) == "" {
+				continue
+			}
+			tm, ok := tabMap[tabName]
+			if !ok {
+				continue
+			}
+			if field.Type.String() != tm.restrain {
+				continue
+			}
+			fieldType = tm.refTypOf
+			isNeedNewStruct = true
+			break
+		}
+		newField = append(newField, reflect.StructField{
+			Name: field.Name,
+			Type: fieldType,
+			Tag:  field.Tag,
+		})
+	}
+	if !isNeedNewStruct {
+		return json.Marshal(p)
+	}
+
+	newStruct := reflect.New(reflect.StructOf(newField)).Elem()
+	for i := 0; i < newStruct.NumField(); i++ {
+		oldField := ref.Field(i)
+		oldTyp := typ.Field(i)
+		var newFieldVal reflect.Value
+		newFieldVal = oldField
+		for _, tabName := range tabList {
+			if oldTyp.Tag.Get(tabName) == "" {
+				continue
+			}
+			tm, ok := tabMap[tabName]
+			if !ok {
+				continue
+			}
+			if oldTyp.Type.String() != tm.restrain {
+				continue
+			}
+			if tm.fun == nil {
+				continue
+			}
+			newVal, ok := tm.fun.typeConv(oldField, oldTyp)
+			if ok {
+				newFieldVal = newVal
+			}
+			break
+		}
+
+		fmt.Println(newStruct.Field(i).Type().Name())
+		newStruct.Field(i).Set(newFieldVal)
+	}
+	return json.Marshal(newStruct.Interface())
+}
+
+func MarshalFormat1(p any) ([]byte, error) {
+	ref := reflect.ValueOf(p)
+	typ := ref.Type()
+
 	newField := make([]reflect.StructField, 0, ref.NumField())
 	dateTimeReflectType := reflect.TypeOf(dateTime{})
 	for i := 0; i < ref.NumField(); i++ {
@@ -55,6 +118,7 @@ func MarshalFormat(p any) ([]byte, error) {
 			Tag:  field.Tag,
 		})
 	}
+
 	newStruct := reflect.New(reflect.StructOf(newField)).Elem()
 	for i := 0; i < newStruct.NumField(); i++ {
 		oldField := ref.Field(i)
@@ -67,5 +131,6 @@ func MarshalFormat(p any) ([]byte, error) {
 			newStruct.Field(i).Set(reflect.ValueOf(dateTime{t: v, tag: oldFieldType.Tag}))
 		}
 	}
+
 	return json.Marshal(newStruct.Interface())
 }
