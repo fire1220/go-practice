@@ -2,24 +2,23 @@ package marshaljson
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 	"time"
 )
 
-func verifyField(field reflect.StructField, tabName string) (tabT, bool) {
+func verifyField(fieldType reflect.StructField, fieldVal reflect.Value, tabName string) (tabT, bool) {
 	tm, ok := tabMap[tabName]
 	if !ok {
 		return tm, false
 	}
-	if field.Tag.Get(tabName) == "" {
+	if fieldType.Tag.Get(tabName) == "" {
 		return tm, false
 	}
-	if tm.restrain != "" && field.Type.String() != tm.restrain {
+	if tm.restrain != "" && fieldType.Type.String() != tm.restrain {
 		return tm, false
 	}
-	if tabName != tabDefault {
-
+	if tabName != tabDefault && fieldVal.IsZero() {
+		return tm, false
 	}
 	return tm, true
 }
@@ -33,7 +32,7 @@ func MarshalFormat(p any) ([]byte, error) {
 		field := typ.Field(i)
 		fieldType := field.Type
 		for _, tabName := range tabList {
-			tm, ok := verifyField(field, tabName)
+			tm, ok := verifyField(field, ref.Field(i), tabName)
 			if !ok {
 				continue
 			}
@@ -53,26 +52,24 @@ func MarshalFormat(p any) ([]byte, error) {
 
 	newStruct := reflect.New(reflect.StructOf(newField)).Elem()
 	for i := 0; i < newStruct.NumField(); i++ {
-		oldField := ref.Field(i)
-		oldTyp := typ.Field(i)
+		oldFieldVal := ref.Field(i)
+		oldFileType := typ.Field(i)
 		var newFieldVal reflect.Value
-		newFieldVal = oldField
+		newFieldVal = oldFieldVal
 		for _, tabName := range tabList {
-			tm, ok := verifyField(oldTyp, tabName)
+			tm, ok := verifyField(oldFileType, oldFieldVal, tabName)
 			if !ok {
 				continue
 			}
 			if tm.fun == nil {
 				continue
 			}
-			newVal, ok := tm.fun.typeConv(oldField, oldTyp)
+			newVal, ok := tm.fun.typeConv(oldFieldVal, oldFileType)
 			if ok {
 				newFieldVal = newVal
 			}
 			break
 		}
-
-		fmt.Println(newStruct.Field(i).Type().Name())
 		newStruct.Field(i).Set(newFieldVal)
 	}
 	return json.Marshal(newStruct.Interface())
