@@ -1,4 +1,4 @@
-package marshal
+package marshaljson
 
 import (
 	"encoding/json"
@@ -38,7 +38,7 @@ func (d dateTime) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + t.Format(format) + `"`), nil
 }
 
-func Marshal(p any) ([]byte, error) {
+func MarshalFormat(p any) ([]byte, error) {
 	ref := reflect.ValueOf(p)
 	typ := ref.Type()
 	newField := make([]reflect.StructField, 0, ref.NumField())
