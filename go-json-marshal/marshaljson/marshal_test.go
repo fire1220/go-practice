@@ -9,10 +9,13 @@ import (
 
 type Good struct {
 	ID          int32     `json:"id" default:"456"`
+	ValFloat    float64   `json:"val_float" default:"111"`
+	Val         uint      `json:"val" default:"-111"`
+	ValBool     bool      `json:"val_bool" default:"true"`
 	Name        string    `json:"name" default:"123"`
 	PlayTime    time.Time `json:"play_time" datetime:"2006-01-02 15:04:05"`
 	ExecuteTime time.Time `json:"execute_time" datetime:"2006-01-02" default:"-"`
-	CreatedAt   time.Time `json:"created_at" datetime:"" default:"-"`
+	CreatedAt   time.Time `json:"created_at" datetime:"2006-01-02 15:04:05" default:"0000-00-00"`
 	UpdatedAt   time.Time `json:"updated_at" default:""`
 }
 

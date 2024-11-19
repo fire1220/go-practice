@@ -22,14 +22,6 @@ func stringToBool(str string) ([]byte, error) {
 	return []byte(str), nil
 }
 
-func stringToUint64(str string) ([]byte, error) {
-	_, err := strconv.ParseUint(str, 10, 64)
-	if err != nil {
-		return nil, errors.New("tag default value is not uint")
-	}
-	return []byte(str), nil
-}
-
 func stringToFloat64(str string) ([]byte, error) {
 	_, err := strconv.ParseFloat(str, 10)
 	if err != nil {
@@ -55,14 +47,6 @@ var kindIntMap = map[reflect.Kind]func(string) ([]byte, error){
 	reflect.Uint64: stringToInt64,
 }
 
-var kindUintMap = map[reflect.Kind]func(string) ([]byte, error){
-	reflect.Uint:   stringToUint64,
-	reflect.Uint8:  stringToUint64,
-	reflect.Uint16: stringToUint64,
-	reflect.Uint32: stringToUint64,
-	reflect.Uint64: stringToUint64,
-}
-
 var kindFloatMap = map[reflect.Kind]func(string) ([]byte, error){
 	reflect.Float32: stringToFloat64,
 	reflect.Float64: stringToFloat64,
@@ -71,7 +55,6 @@ var kindFloatMap = map[reflect.Kind]func(string) ([]byte, error){
 var kindSlice = []map[reflect.Kind]func(string) ([]byte, error){
 	kindBoolMap,
 	kindIntMap,
-	kindUintMap,
 	kindFloatMap,
 }
 
