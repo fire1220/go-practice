@@ -30,6 +30,20 @@ func stringToFloat64(str string) ([]byte, error) {
 	return []byte(str), nil
 }
 
+func stringToArray(str string) ([]byte, error) {
+	if str != "[]" && str != "{}" {
+		return nil, errors.New("tag default value is not array")
+	}
+	return []byte(str), nil
+}
+
+func stringToObj(str string) ([]byte, error) {
+	if str == "{}" {
+		return []byte(str), nil
+	}
+	return []byte(`"` + str + `"`), nil
+}
+
 var kindBoolMap = map[reflect.Kind]func(string) ([]byte, error){
 	reflect.Bool: stringToBool,
 }
@@ -52,10 +66,22 @@ var kindFloatMap = map[reflect.Kind]func(string) ([]byte, error){
 	reflect.Float64: stringToFloat64,
 }
 
+var kindArrayMap = map[reflect.Kind]func(string) ([]byte, error){
+	reflect.Array: stringToArray,
+	reflect.Slice: stringToArray,
+}
+
+var kindObjMap = map[reflect.Kind]func(string) ([]byte, error){
+	reflect.Struct: stringToObj,
+	reflect.Map:    stringToObj,
+}
+
 var kindSlice = []map[reflect.Kind]func(string) ([]byte, error){
 	kindBoolMap,
 	kindIntMap,
 	kindFloatMap,
+	kindArrayMap,
+	kindObjMap,
 }
 
 type defaultT struct {
