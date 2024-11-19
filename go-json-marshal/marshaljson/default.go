@@ -2,7 +2,6 @@ package marshaljson
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 	"strconv"
 )
@@ -90,7 +89,6 @@ type defaultT struct {
 
 func (d defaultT) MarshalJSON() ([]byte, error) {
 	format := d.tag.Tag.Get(tabDefault)
-	fmt.Println(d.tag.Type.Kind())
 	for _, m := range kindSlice {
 		if fn, ok := m[d.tag.Type.Kind()]; ok {
 			return fn(format)
