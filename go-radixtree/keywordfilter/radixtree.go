@@ -1,5 +1,7 @@
 package keywordfilter
 
+import "fmt"
+
 type node struct {
 	category int
 	children map[rune]*node
@@ -11,6 +13,19 @@ type KeywordFilter struct {
 
 func New() *KeywordFilter {
 	return &KeywordFilter{root: &node{children: make(map[rune]*node)}}
+}
+
+func (t *KeywordFilter) PrintTree() {
+	var printNode func(map[rune]*node, string)
+	printNode = func(children map[rune]*node, s string) {
+		for key, val := range children {
+			fmt.Println(val.category, s, string(key))
+			if len(val.children) > 0 {
+				printNode(val.children, s+"-")
+			}
+		}
+	}
+	printNode(t.root.children, "-")
 }
 
 func (t *KeywordFilter) Insert(str string, category int) {
